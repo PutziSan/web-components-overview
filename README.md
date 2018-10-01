@@ -91,6 +91,24 @@ customElements.define("my-element", MyElement);
 
 if it detects double-declarations it will throw an error.
 
+
+#### babel verständnis
+
+Am Beispiel: [@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx)
+
+##### allgemein
+
+Babel nutzt flow-js. und eine ziemlich verwirrende Struktur, Grundsätzlich wird die [Abstract syntax tree (AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree) genutzt. Weiteres dazu im [babel-handbuch](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md#toc-introduction)
+
+##### Abhängigkeiten
+
+zusätzlichen packages werden gneutzt:
+
+* [@babel/helper-builder-react-jsx](https://github.com/babel/babel/tree/master/packages/babel-helper-builder-react-jsx) - Helper function to build react jsx
+* [@babel/types](https://github.com/babel/babel/tree/master/packages/babel-types) - a [Lodash](https://github.com/lodash/lodash)-esque utility library for AST nodes
+
+
+
 ## old/advanced stuff
 
 nur um es zu nennen, ich glaube nicht dass ich das brauche:
