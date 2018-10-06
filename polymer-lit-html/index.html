@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>test-polymer-lit-element</title>
+
+  <!-- Polyfills only needed for Firefox and Edge. -->
+  <script src="https://unpkg.com/@webcomponents/webcomponentsjs@latest/webcomponents-loader.js"></script>
+</head>
+<body>
+
+<my-element mood="great"></my-element>
+<script type="module">
+  import {LitElement, html} from '@polymer/lit-element';
+
+  class MyElement extends LitElement {
+    static get properties() {
+      return {
+        mood: {type: String}
+      };
+    }
+
+    constructor() {
+      super();
+      this.mood = 'happy';
+    }
+
+    render() {
+      return html`<style> .mood { color: blue; } </style>
+          Web Components are <span class="mood">${this.mood}</span>!`;
+    }
+  }
+
+  customElements.define('my-element', MyElement);
+</script>
+</body>
+</html>
