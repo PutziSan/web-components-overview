@@ -1,0 +1,16 @@
+{
+  "name": "polymer-lit-html-with-babel-macro",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "PS",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@polymer/lit-element": "^0.6.2",
+    "babel-generator": "^6.26.1",
+    "babel-plugin-macros": "^2.4.2",
+    "babel-template": "^6.26.0",
+    "babel-types": "^6.26.0"
+  }
+}

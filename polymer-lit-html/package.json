@@ -11,6 +11,10 @@
     "start:browser-sync": "browser-sync start --proxy 127.0.0.1:8042 --files 'src/*.html, src/*.js'"
   },
   "dependencies": {
-    "@polymer/lit-element": "^0.6.2"
+    "@polymer/lit-element": "^0.6.2",
+    "inferno": "^6.0.0-rc.5",
+    "preact": "^8.3.1",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   }
 }
