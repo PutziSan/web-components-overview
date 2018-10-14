@@ -27,6 +27,8 @@ The basic approach for implementing a web component generally looks something li
 
 ## weitere gute Links
 
+- [stencil](https://stenciljs.com/): gute lbirary die viel macht was ich mir schon vorstelle (aber dann auch widerum zu viel)
+- [webcomponents.org](https://www.webcomponents.org): gute seite mit allgemeinen materialien
 - [Google-overview for building components](https://developers.google.com/web/fundamentals/web-components/)
 - [Custom Elements v1: Reusable Web Components - Intro by Google-dev](https://developers.google.com/web/fundamentals/web-components/customelements#fromtemplate)
 - [google-example for building a PWA via web.components (polymer v2)](https://developers.google.com/web/showcase/2016/iowa2016) (old but gold)

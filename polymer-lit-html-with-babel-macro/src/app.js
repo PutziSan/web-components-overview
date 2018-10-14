@@ -30,6 +30,15 @@ class App extends LitElement {
   )}
 </div>`;
   }
+
+  render2() {
+    return html`<div>
+    <x-test-ele bla="asd" onClick=${() => console.log("click")}>
+    TESTER<a><x-test-ele></x-test-ele>
+    </x-test-ele>
+    </div>`;
+  }
+
 }
 
 customElements.define("x-app", MyElement);

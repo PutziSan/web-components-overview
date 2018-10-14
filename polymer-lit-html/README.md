@@ -2,6 +2,20 @@
 
 [Polymers lit-element](https://github.com/Polymer/lit-element) is "An ultra-light custom element base class with a simple but expressive API".
 
+## Fazit aktuell
+
+Aktuell gefällt es mir nicht so gut, da zu viel Magie passiert (wenn eine beobachtete variabel per `... = [NEW_VALUE]`) geändert wird, kriegt es das mit und rendert neu, verwirrend und das muss man wissen, mag ich nicht.
+
+> Eine andere Idee ist nur [lit-html](https://github.com/Polymer/lit-html) zu nutzen, aber wenn man es react-mäßig nutzen würde wird es zu performance-problemen führen da ständig alles neu gerendert wird.
+
+### abzuwarten
+
+Man bräuchte ein framework was lit-html vernünftig wrapped und zb über keys oder babel-macro vernünftige checks zur render-performance hinzufügen kann um ein check zu machen welche nested components neu gerendert werden müssen (quasi wier reacts [reconsilation-alg](https://reactjs.org/docs/reconciliation.html)).
+
+> [stencil](https://stenciljs.com/) scheint da gute Schritte in der richtung zu machen, sollte ich beobachten
+
+
+
 ## devlopping with polymer
 
 Da wir Dateien von node_modulen importieren, aber keine relativen Pfade nutzen, muss [polymer-cli](https://www.polymer-project.org/3.0/docs/tools/polymer-cli) mit genutzt werden.

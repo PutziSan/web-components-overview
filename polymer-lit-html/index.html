@@ -9,80 +9,40 @@
 </head>
 <body>
 
-<div id="preact-root"></div>
-<div id="inferno-root"></div>
-
 <my-element mood="great"></my-element>
+
 <script type="module">
   import { LitElement, html } from '@polymer/lit-element';
 
   class MyElement extends LitElement {
     static get properties() {
       return {
-        mood: { type: String }
+        mood: { type: String },
+        count: { type: Number },
       };
     }
 
     constructor() {
       super();
       this.mood = 'happy';
+      this.count = 0;
+
+      this.handleClick = () => this.count++;
     }
 
     render() {
       return html`<style> .mood { color: blue; } </style>
-          Web Components are <span class="mood">${this.mood}</span>!`;
+          <div>
+            Web Components are <span class="mood">${this.mood}</span>!
+          </div>
+          <div @click="${this.handleClick}">
+          ${this.count}
+</div>
+`;
     }
   }
 
   customElements.define('my-element', MyElement);
-</script>
-<script type="module">
-  import { Component, createElement, render } from 'preact';
-
-  class LikeButton extends Component {
-
-    constructor(props) {
-      super(props);
-      this.state = { liked: false };
-    }
-
-    render() {
-      if (this.state.liked) {
-        return 'You liked this.';
-      }
-
-      return createElement(
-        'button',
-        { onClick: () => this.setState({ liked: true }) },
-        'Like (via Preact)'
-      );
-    }
-  }
-
-  render(createElement(LikeButton), document.getElementById('preact-root'));
-</script>
-<script type="module">
-  import { render, createVNode, createComponentVNode, createTextVNode, Component } from 'inferno/dist/index.esm';
-
-  class LikeButton extends Component {
-
-    constructor(props) {
-      super(props);
-      this.state = { liked: false };
-    }
-
-    render() {
-      if (this.state.liked) {
-        return 'You liked this.';
-      }
-
-      return createVNode(1, "button", null, createTextVNode('Like (via Inferno)'), 2, {
-        onClick: () => this.setState({ liked: true })
-      });
-    }
-  }
-
-  render(createComponentVNode(2, LikeButton), document.getElementById('inferno-root'));
 </script>
 </body>
 </html>

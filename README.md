@@ -11,115 +11,13 @@ ToDos:
 
 ## vergleich verschiedener technologien
 
-* web-components / polymer-lit-element : gute Idee da Code kaum transformiert werden muss zur Nutzung
-* react : bietet leider keine ESM-Dateien aktuell an
-* preact => bietet direkt schon ESM an, ist bedeutend kleiner aber beim rendern langsamer
-* meteor => ebenfalls ESM included, benötigt aber in jedem Fall babel-parser
-
+- web-components / polymer-lit-element : gute Idee da Code kaum transformiert werden muss zur Nutzung
+- react : bietet leider keine ESM-Dateien aktuell an
+- preact => bietet direkt schon ESM an, ist bedeutend kleiner aber beim rendern langsamer
+- meteor => ebenfalls ESM included, benötigt aber in jedem Fall babel-parser
 
 ## Problem der Element-Definition
 
 Was mich sehr stört ist, dass nicht ersichtlich ist wo die Elemente definiert werden. durch [`customElements.define("[ELE_NAME]", [ELE_IMPLEMENATION])`](https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define) werden sie global bereitgestellt und verstanden. Möglichkeiten um es einfachedr zu machen:
 
-### Möglichkeit: alle Element-Definitionen in einer Datei:
-
-```javascript
-import { CustomEle } from "./CustomEle.js";
-
-const definitions = {
-  "custom-ele": CustomEle
-  // ...
-};
-
-for (var key in definitions) {
-  customElements.define(key, definitions[key]);
-}
-```
-
-Hat aber den Nachteil dass alles mit einem mal importiert werden muss
-
-## Idee babel-plugin - JSX-to-web
-
-Was mich sehr stört ist, dass nicht ersichtlich ist wo die Elemente definiert werden. Eine JSX-ähnliche Nutzung wäre idealer:
-
-```javascript
-// CustomElement.js
-import { LitElement, html } from "@polymer/lit-element";
-
-export class CustomElement{
-  render() {
-    return html`<div>My Custom Element!</div>`;
-  }
-}
-
-customElements.define("custom-element", MyElement);
-
-// app.js
-import { LitElement, html } from "@polymer/lit-element";
-import { CustomElement } from "./CustomElement.js";
-
-class MyElement extends LitElement {
-  render() {
-    return html`
-        <style> 
-          .mood { color: green; } 
-        </style>
-        <div>
-          Web Components are <span class="mood">cool</span>!
-          <CustomElement />
-        </div>`;
-  }
-}
-
-customElements.define("my-element", MyElement);
-```
-
-which compiles to sth like:
-
-```javascript
-// app.js
-import { LitElement, html } from "@polymer/lit-element";
-import "./CustomElement.js";
-
-class MyElement extends LitElement {
-  render() {
-    return html`
-        <style> 
-          .mood { color: green; } 
-        </style>
-        <div>
-          Web Components are <span class="mood">cool</span>!
-          <custom-element></custom-element>
-        </div>`;
-  }
-}
-
-customElements.define("my-element", MyElement);
-```
-
-if it detects double-declarations it will throw an error.
-
-
-#### babel verständnis
-
-Am Beispiel: [@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx)
-
-##### allgemein
-
-Babel nutzt flow-js. und eine ziemlich verwirrende Struktur, Grundsätzlich wird die [Abstract syntax tree (AST)](https://en.wikipedia.org/wiki/Abstract_syntax_tree) genutzt. Weiteres dazu im [babel-handbuch](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md#toc-introduction)
-
-##### Abhängigkeiten
-
-zusätzlichen packages werden gneutzt:
-
-* [@babel/helper-builder-react-jsx](https://github.com/babel/babel/tree/master/packages/babel-helper-builder-react-jsx) - Helper function to build react jsx
-* [@babel/types](https://github.com/babel/babel/tree/master/packages/babel-types) - a [Lodash](https://github.com/lodash/lodash)-esque utility library for AST nodes
-
-
-
-## old/advanced stuff
-
-nur um es zu nennen, ich glaube nicht dass ich das brauche:
-
-- [alte webcomponents-seite](http://webcomponents.github.io/) mit guten verweisen zu anderen frameworks
-- [skatejs](https://github.com/skatejs/skatejs) als anderes größeres web-components-framework => sieht aber nicht so gut aus
+> siehe `polymer-lit-html-with-babel-macro` wie man es machen könnte

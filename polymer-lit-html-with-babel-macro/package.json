@@ -7,10 +7,18 @@
   "dependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
-    "@polymer/lit-element": "^0.6.2",
-    "babel-generator": "^6.26.1",
-    "babel-plugin-macros": "^2.4.2",
-    "babel-template": "^6.26.0",
-    "babel-types": "^6.26.0"
+    "@babel/generator": "^7.1.3",
+    "@babel/parser": "^7.1.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-syntax-object-rest-spread": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/template": "^7.1.2",
+    "@babel/traverse": "^7.1.4",
+    "@babel/types": "^7.1.3",
+    "@polymer/lit-element": "^0.6.2 ",
+    "babel-plugin-macros": "^2.4.2"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.83.0"
   }
 }
