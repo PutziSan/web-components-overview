@@ -32,3 +32,6 @@ Selbst bauen mit node.js-server (zb express):
 ### production-build
 
 überlegen wie caching mit hashes in filenamem (filename austauschen und imports austauschen) [hashing-algorithmus-bsp](https://medium.com/@chris_72272/what-is-the-fastest-node-js-hashing-algorithm-c15c1a0e164e)
+
+* problem ist definitiv mit polymer, serve funktioniert eigtl ganz gut, build fehlen aber ncoh einige features!
+* es würde wirklich sinn machen ein eigenes kleines größ0eres tool zu schreiben dafür (build- + dev-tool)

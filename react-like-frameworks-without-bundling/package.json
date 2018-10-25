@@ -6,7 +6,7 @@
   "author": "PS",
   "license": "MIT",
   "scripts": {
-    "start": "yarn run start:polymer | yarn run start:browser-sync",
+    "start": "concurrently \"yarn run start:polymer\" \"yarn run start:browser-sync\"",
     "start:polymer": "polymer serve --compile never --port 8042 --hostname 127.0.0.1",
     "start:browser-sync": "browser-sync start --proxy 127.0.0.1:8042 --files 'src/*.html, src/*.js'"
   },
