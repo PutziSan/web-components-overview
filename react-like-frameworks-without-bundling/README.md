@@ -80,5 +80,8 @@ ToDo:
 - polymer durch eigenes babel-plugin austauschen: mit dependency-tree überprüfen welche beziehungen es gibt und die imports dann umschreiben und entsprechend kopieren
     - tree-shaking wäre hier noch ein todo
     - außerdem muss source-map-building überprüft werden
+- beachte dass contenthash immer als letztes berechnet werden muss, da sonst caching brechen könnte (man lädt eine alte index.js runter die den falschen verweis noch drin stehen hat)
     
 für Sourcemaps: check https://github.com/mozilla/source-map (aber für den anfang ist es wohl sinnvoller alles mit babel-plugins in einem rutsch durchzuziehen)
+
+Check nutzung von http2-push, abe rbedenke auch die risiken (unnötiges laden von assets die eigentlich schon im cache sind, gute zusammenstellung dazu im firebase-beitrag: https://firebase.googleblog.com/2016/09/http2-comes-to-firebase-hosting.html)
