@@ -80,3 +80,5 @@ ToDo:
 - polymer durch eigenes babel-plugin austauschen: mit dependency-tree überprüfen welche beziehungen es gibt und die imports dann umschreiben und entsprechend kopieren
     - tree-shaking wäre hier noch ein todo
     - außerdem muss source-map-building überprüft werden
+    
+für Sourcemaps: check https://github.com/mozilla/source-map
