@@ -81,4 +81,4 @@ ToDo:
     - tree-shaking wäre hier noch ein todo
     - außerdem muss source-map-building überprüft werden
     
-für Sourcemaps: check https://github.com/mozilla/source-map
+für Sourcemaps: check https://github.com/mozilla/source-map (aber für den anfang ist es wohl sinnvoller alles mit babel-plugins in einem rutsch durchzuziehen)
