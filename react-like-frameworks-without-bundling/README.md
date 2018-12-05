@@ -34,4 +34,49 @@ Selbst bauen mit node.js-server (zb express):
 überlegen wie caching mit hashes in filenamem (filename austauschen und imports austauschen) [hashing-algorithmus-bsp](https://medium.com/@chris_72272/what-is-the-fastest-node-js-hashing-algorithm-c15c1a0e164e)
 
 * problem ist definitiv mit polymer, serve funktioniert eigtl ganz gut, build fehlen aber ncoh einige features!
-* es würde wirklich sinn machen ein eigenes kleines größ0eres tool zu schreiben dafür (build- + dev-tool)
+* es würde wirklich sinn machen ein eigenes kleines größeres tool zu schreiben dafür (build- + dev-tool)
+* idee wäre zb mittels polymer dependencies (node_modules) umzuschreiben sodass sie sich alle gegenseitig + relativ auflösen und die dependencies dann in src/node_module einzusetzen
+    * auch TS mit rein?
+    
+    
+## weitere idee:
+
+- [dynamic import polyfill nutzen](https://github.com/uupaa/dynamic-import-polyfill) als globale funktion
+    - implementiert dynamisch ein `<script type="module" src="..."></script>`
+- babel-plugin nutzen, um für production calls von `import(...)` zu `importModule([ABSOLUTE_PATH])` umzuschreiben
+    - ABSOLUTE_PATH muss immer berechnet werden, sodass alle relativen pfade absolut auf das script zeigen
+- generiere für den dependency-tree `<script type="module" src="PATH"></script>`, von unterster ebene im baum zu opberster, damit alles zentral vorgeladen wird und kein waterfall entsteht
+- alle routen werden zentral definiert mit `const route = { path: string, module: () => import(PATH), next?: nextRoute }`
+    - `next` ist optional, wenn definiert, wird wenn diese route geladen ist das nächste module im trichter vorgeladen (trichter meint den weg den ein Kunde im allgemeinem gehen soll auf der seite)
+- generiere für alle routen die oben zentral definiert wurden eine statische html-index-seite um bestmöglich vorzuladen
+    - generierung einmal über ein `PREFETCHED`-objekt was in der html-seite steht und außerdem eine generierte JS-Datei `prefetched.js` (für allgemein vorgeladene inhalte (zb menupunkte) und optional vorgeladene inhalte (zb blogbeiträge))
+
+polymer-cli auf shadow-src: `polymer-cli --sources .dev-src/**/* --entrypoint .dev-src/index.html`
+
+start-script, welches mit chokidar und babel
+
+- polymer ist grundsätzlich ein tool aus der hölle
+- damit mjs-unterstüzung für build funktionierit muss es getweaked werden in node_modules, bis der fix draußen ist https://github.com/Polymer/tools/issues/736
+    - `node_modules/polymer-analyzer/lib/core/analysis-context.js` `['mjs', new javascript_parser_1.JavaScriptParser()],` ... hinzzfügen wo aktuel nuur `"js", ` ist
+    
+    
+    
+idee zur weiteren optimierung bzgl dependency-tree:
+- mach den langen dependency-tree flat mit dynamisch vergebenen namen mit bables moduleResolver, der nochmal eine babel-schleife zum schluss macht und die aliase anpasst und node läuft entsprechend drüber und verschiebt die dateien neu
+
+
+reihenfolge für production build:
+
+1. `node build` => normal babel to parse everysthing to valid es6-files
+1. `yarn build:polymer` => copy npm_modules into own path
+1. `node minify` => minifiziere js-code
+1. `node dependency-tree` => check alle dependencies und flatte den graph dass alle zufällige (kurze) namen bekommen und in `__a` liegen
+    - nutze md5-hash (die ersten 8 chars) als contenthash (wenn der bereits existiert, nutze die nächsten 8 chars)
+    
+    
+## Fazit next todos
+    
+ToDo:
+- polymer durch eigenes babel-plugin austauschen: mit dependency-tree überprüfen welche beziehungen es gibt und die imports dann umschreiben und entsprechend kopieren
+    - tree-shaking wäre hier noch ein todo
+    - außerdem muss source-map-building überprüft werden
