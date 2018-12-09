@@ -1,4 +1,5 @@
 // @flow
+/*
 import generate from "@babel/generator";
 import template from "@babel/template";
 import type NodePath from "@babel/traverse";
@@ -22,47 +23,76 @@ import {
   ObjectProperty,
   SpreadElement
 } from "@babel/types";
+*/
 
 // from airbnb tool: https://github.com/tleunen/babel-plugin-module-resolver/tree/master/src
 // auch zu checken: https://github.com/tleunen/babel-plugin-module-resolver/tree/master/src
 
-export default function ({ template, types: t }) {
-  const buildImport = template('Promise.resolve().then(() => MODULE)');
+function customBla() {
+  const cache = [];
+
+  return (key, value) => {
+    if (typeof value === "object" && value !== null) {
+      if (cache.indexOf(value) !== -1) {
+        // Duplicate reference found
+        try {
+          // If this value does not reference a parent it can be deduped
+          return JSON.parse(JSON.stringify(value));
+        } catch (error) {
+          // discard key if value cannot be deduped
+          return;
+        }
+      }
+      // Store value in our collection
+      cache.push(value);
+    }
+    return value;
+  }
+}
+
+module.exports = function({ template, types: t }) {
+  const buildImport = template("Promise.resolve().then(() => MODULE)");
 
   return {
-    // NOTE: Once we drop support for Babel <= v6 we should
-    // update this to import from @babel/plugin-syntax-dynamic-import.
-    // https://www.npmjs.com/package/@babel/plugin-syntax-dynamic-import
-    manipulateOptions(opts, parserOpts) {
-      parserOpts.plugins.push('dynamicImport');
-    },
-
     visitor: {
       Import(path) {
-        const importArguments = path.parentPath.node.arguments;
-        const [importPath] = importArguments;
-        const isString = t.isStringLiteral(importPath) || t.isTemplateLiteral(importPath);
-        if (isString) {
-          t.removeComments(importPath);
-        }
-        const SOURCE = isString
-          ? importArguments
-          : t.templateLiteral([
-            t.templateElement({ raw: '', cooked: '' }),
-            t.templateElement({ raw: '', cooked: '' }, true),
-          ], importArguments);
-        const requireCall = t.callExpression(
-          t.identifier('require'),
-          [].concat(SOURCE),
-        );
-
-        const { noInterop = false } = this.opts;
-        const MODULE = noInterop === true ? requireCall : t.callExpression(this.addHelper('interopRequireWildcard'), [requireCall]);
-        const newImport = buildImport({
-          MODULE,
-        });
-        path.parentPath.replaceWith(newImport);
-      },
-    },
+        console.log(JSON.stringify(path, customBla()));
+      }
+    }
   };
+};
+
+function oldImport(path) {
+  const importArguments = path.parentPath.node.arguments;
+  const [importPath] = importArguments;
+  const isString =
+    t.isStringLiteral(importPath) || t.isTemplateLiteral(importPath);
+  if (isString) {
+    t.removeComments(importPath);
+  }
+  const SOURCE = isString
+    ? importArguments
+    : t.templateLiteral(
+        [
+          t.templateElement({ raw: "", cooked: "" }),
+          t.templateElement({ raw: "", cooked: "" }, true)
+        ],
+        importArguments
+      );
+  const requireCall = t.callExpression(
+    t.identifier("require"),
+    [].concat(SOURCE)
+  );
+
+  const { noInterop = false } = this.opts;
+  const MODULE =
+    noInterop === true
+      ? requireCall
+      : t.callExpression(this.addHelper("interopRequireWildcard"), [
+          requireCall
+        ]);
+  const newImport = buildImport({
+    MODULE
+  });
+  path.parentPath.replaceWith(newImport);
 }
