@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+
+    "target": "esnext",
+    "sourceMap": true,
+
+    "outDir": "babel-plugin",
+
+    "noImplicitUseStrict": true,
+    "noImplicitAny": true,
+    "lib": ["esnext"]
+  },
+  "include": ["src-babel-plugin"],
+  "exclude": ["node_modules"]
+}

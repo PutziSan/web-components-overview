@@ -9,8 +9,10 @@ const path = require("path");
 
 const customPlugin = require("./new-babel-plugin");
 
+const realPlugin = require("./babel-plugin/new-babel-plugin-ts.js");
+
 transformFile(path.join(__dirname, "src", "index.js"), {
   babelrc: false,
   configFile: false,
-  plugins: [jsxSyntax, dynamicImportSyntaxPlugin, customPlugin]
+  plugins: [jsxSyntax, dynamicImportSyntaxPlugin, realPlugin]
 });

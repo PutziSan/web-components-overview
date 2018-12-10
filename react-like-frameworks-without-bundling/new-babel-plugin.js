@@ -1,8 +1,5 @@
-// @flow
-/*
-import generate from "@babel/generator";
+/*import generate from "@babel/generator";
 import template from "@babel/template";
-import type NodePath from "@babel/traverse";
 import {
   Expression,
   isImport,
@@ -21,8 +18,12 @@ import {
   Literal,
   ObjectMethod,
   ObjectProperty,
-  SpreadElement
+  SpreadElement,
+  BaseNode,
+  ImportDeclaration,
+  isImportDefaultSpecifier
 } from "@babel/types";
+import type { NodePath } from "@babel/traverse";
 */
 
 // from airbnb tool: https://github.com/tleunen/babel-plugin-module-resolver/tree/master/src
@@ -47,16 +48,26 @@ function customBla() {
       cache.push(value);
     }
     return value;
-  }
+  };
 }
 
-module.exports = function({ template, types: t }) {
-  const buildImport = template("Promise.resolve().then(() => MODULE)");
-
+module.exports = function({ traverse, types, ...api }, opts, cwdPath) {
   return {
     visitor: {
+      ImportDeclaration(path) {
+        const filename = path.hub.file.opts.filename;
+        console.log(filename);
+
+        const node = path.node;
+
+        node.specifiers.forEach(specifier => {
+          if (types.isImportDefaultSpecifier(specifier)) {
+          }
+        });
+      },
       Import(path) {
-        console.log(JSON.stringify(path, customBla()));
+        console.log(JSON.stringify(path.node, customBla()));
+        console.log(JSON.stringify(path.parentPath.node, customBla()));
       }
     }
   };
@@ -65,11 +76,14 @@ module.exports = function({ template, types: t }) {
 function oldImport(path) {
   const importArguments = path.parentPath.node.arguments;
   const [importPath] = importArguments;
+
   const isString =
     t.isStringLiteral(importPath) || t.isTemplateLiteral(importPath);
+
   if (isString) {
     t.removeComments(importPath);
   }
+
   const SOURCE = isString
     ? importArguments
     : t.templateLiteral(
@@ -79,20 +93,15 @@ function oldImport(path) {
         ],
         importArguments
       );
+
   const requireCall = t.callExpression(
     t.identifier("require"),
     [].concat(SOURCE)
   );
 
-  const { noInterop = false } = this.opts;
-  const MODULE =
-    noInterop === true
-      ? requireCall
-      : t.callExpression(this.addHelper("interopRequireWildcard"), [
-          requireCall
-        ]);
   const newImport = buildImport({
-    MODULE
+    MODULE: requireCall
   });
+
   path.parentPath.replaceWith(newImport);
 }

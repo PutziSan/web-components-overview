@@ -85,3 +85,12 @@ ToDo:
 für Sourcemaps: check https://github.com/mozilla/source-map (aber für den anfang ist es wohl sinnvoller alles mit babel-plugins in einem rutsch durchzuziehen)
 
 Check nutzung von http2-push, abe rbedenke auch die risiken (unnötiges laden von assets die eigentlich schon im cache sind, gute zusammenstellung dazu im firebase-beitrag: https://firebase.googleblog.com/2016/09/http2-comes-to-firebase-hosting.html)
+
+
+## babel-plugin
+
+guter ansatz: [Babel handbook: Writing your first Babel Plugin](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md#writing-your-first-babel-plugin)
+
+grundsätzlich:
+1. eigener `visitor: Identifier(path)` wobei identifier in [babel-types](https://github.com/babel/babel/tree/master/packages/babel-types/src/definitions) definiert sind
+
